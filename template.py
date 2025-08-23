@@ -4,7 +4,7 @@ from pathlib import Path
 
 logging.basicConfig(level = logging.INFO, format = '[%(asctime)s]: %(message)s')
 
-project_name = "End-to-End-ML-Pipeline"
+project_name = "End_to_End_ML_Pipeline"
 
 list_of_files = [
     ".github/workflows/.gitkeep",
