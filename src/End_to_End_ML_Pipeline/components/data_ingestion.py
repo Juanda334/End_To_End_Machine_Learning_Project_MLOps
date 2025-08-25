@@ -1,4 +1,5 @@
 import os
+import ssl
 import zipfile
 from pathlib import Path
 from urllib import request as req
@@ -12,6 +13,17 @@ class DataIngestion:
         
     def download_data(self):
         if not os.path.exists(self.config.local_data_file):
+            # Create SSL context that doesn't verify certificates
+            # This is a workaround for SSL certificate issues
+            ssl_context = ssl.create_default_context()
+            ssl_context.check_hostname = False
+            ssl_context.verify_mode = ssl.CERT_NONE
+            
+            # Create opener with SSL context
+            opener = req.build_opener(req.HTTPSHandler(context=ssl_context))
+            req.install_opener(opener)
+            
+            logger.info(f"Downloading data from: {self.config.source_URL}")
             filename, headers = req.urlretrieve(
                 url = self.config.source_URL,
                 filename = self.config.local_data_file
